@@ -33,8 +33,10 @@ export class ArgsParser {
     parseArgs(args: Array<string>) : Map<string, string | undefined> {
         if (args.includes(this._helpProperty.key) || args.includes(this._helpProperty.alias)) {
             process.stdout.write(HELP);
-            process.exit(1)
-        };
+            process.exit(0)
+        }
+
+        let missRequired : boolean = false;
 
         if (args.length > 3) {
             let i = 0
@@ -53,10 +55,13 @@ export class ArgsParser {
                             i++;
                             break;
                         }
+                        else {
+                            throw SyntaxError;
+                        }
+
                     }
                     else {
                         if (j == this._properties.length-1) { 
-                            // process.stderr.write(HELP); // dublicate error help
                             i = args.length-1;
                         }
                     }
@@ -64,17 +69,18 @@ export class ArgsParser {
                 i++;
             } while (i < args.length-1);
         }
-        else {
-            process.stderr.write(HELP);
-            throw SyntaxError
-        }
 
-        this._properties.forEach((item: IProperty) => {if (item.requiered && item.value === undefined) {
-            process.stderr.write(`Error. Option: ${item.key},${item.alias} are requaired. ${USEHELP}\n`);
+        this._properties.forEach((item: IProperty) => {
+            if (item.requiered && item.value === undefined) {
+            missRequired = true;
+            process.stderr.write(`Error. Option: ${item.key},${item.alias} are requaired.\n`);
+            }
+        })
+
+        if (missRequired) {
+            process.stderr.write(`${USEHELP}`);
             throw SyntaxError;
         }
-    })
-    
-    return new Map(this._properties.map((item: IProperty) => [ item.name, item.value ]));
+        return new Map(this._properties.map((item: IProperty) => [ item.name, item.value ]));
     }
 }

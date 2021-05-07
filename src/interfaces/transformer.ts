@@ -8,22 +8,15 @@ export class Transformer extends Transform
    private _shift: number;
    private _action: string; 
     
-   constructor(opt = {}, shift: number, action: string)
-   {
+   constructor(opt = {}, shift: number, action: string) {
       super(opt);
       this._shift = shift;
       this._action = action;
    }
-   /**
-    * метод, реализующий в себе запись данных (chunk поступают в поток Transform), 
-    * и чтение данных - когда другой поток читает из Transform
-    * @param chunk
-    * @param encoding
-    * @param done - в общем случае done(err, chunk)
-    * @private
-    */
-   _transform(data : Buffer, encoding : any, callback : any)
-  {
+
+   _transform(data : Buffer, encoding : any, callback : any){
+      // I have not to even convert buffer to string, due "encript" function algorithm.
+      // But I did it.
       this.push(Buffer.from(encrypt(data.toString(), this._shift, this._action)));
       callback();
    }

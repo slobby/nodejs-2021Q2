@@ -41,3 +41,24 @@ export function isValidfileName (fileName: string, logger: Duplex ): Boolean {
     }
     return isValid;
 };
+
+export function isValidFileToWrite (fileName: string, logger: Duplex ): Boolean {
+    let isValid: Boolean = true;
+    let isExist: Boolean = true;
+    try {
+        accessSync(fileName, constants.F_OK);
+    }
+    catch (err) {
+        isExist = false;
+    }
+    if (isExist) {
+        try {
+            accessSync(fileName, constants.W_OK);
+        }
+        catch (err) {
+            logger.write(`Error. ${fileName} is not writable.\n`);
+            isValid = false;
+        }
+    }
+    return isValid;
+};

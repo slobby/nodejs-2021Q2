@@ -1,18 +1,18 @@
 {
   "name": "caesar-cipher",
   "version": "1.0.0",
-  "description": "first task",
+  "description": "Encripts and decrypts text with Caesar's cipher",
   "main": "./dist/caesar-cipher.js",
   "scripts": {
-    "start": "node ./dist/caesar-cipher.js",
-    "test": "test"
+    "start": "node ./dist/caesar-cipher -h",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
-    "url": "fg"
+    "url": "https://github.com/slobby/nodejs-2021Q2"
   },
   "keywords": [
-    "nodejs"
+    "nodejs, Caesar's cipher"
   ],
   "author": "andslobby",
   "license": "ISC",
